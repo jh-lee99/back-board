@@ -8,29 +8,35 @@ app.use(express.urlencoded({
   extended: true
 }))
 
-// 1. 모든 http method 허용, 스트링 리턴
+// 모든 http method 허용, 스트링 리턴
 app.use('/hello', (req, res) => {
   res.send('Hello test');
 })
 
-// 2. get만 허용
+// GET만 허용
 app.get('/hello2', (req, res) => {
   res.send('Hello test');
 })
 
-// 3. query 파라메터로 데이터 전송
+// GET + query 파라메터로 데이터 전송
 app.get('/hello3', (req, res) => {
   const {name} = req.query;
   res.send(`Hello ${name}`);
 })
 
-// 4. uri 파라메터로 데이터 전송
+// GET + uri 파라메터로 데이터 전송
 app.get('/hello32/:name', (req, res) => {
   const {name} = req.params;
   res.send(`Hello ${name}`);
 })
 
-// 5. post 전송, x-www-form-urlencoded 방식
+// POST + query 파라메터로 데이터 전송
+app.post('/hello33', (req, res) => {
+  const {name} = req.query;
+  res.send(`Hello ${name}`);
+})
+
+// post 전송, x-www-form-urlencoded 방식
 app.post('/hello4', (req, res) => {
   const {name} = req.body;
   res.send(`Hello ${name}`);
