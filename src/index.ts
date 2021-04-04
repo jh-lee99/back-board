@@ -1,5 +1,6 @@
 import express from 'express';
 import {createConnection} from "typeorm";
+import router from './router';
 
 let app = express();
 
@@ -60,6 +61,8 @@ app.post('/hello6', (req, res) => {
   const result = req.body;
   res.send(result);
 })
+
+app.use('/api', router);
 
 createConnection().then(connection => {
   app.listen(8080, () => {
