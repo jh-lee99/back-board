@@ -14,7 +14,18 @@ export class BoardController {
   }
 
   static findAllBoard = async (req, res) => {
-    const boards = await getConnection().getRepository(Board).find();
+    const {page_number, page_size} = req.query;
+
+    const options = {};
+    options['select'] = ["id", "title", "content", "created", "updated"];
+    options['order'] = {id: 'DESC'};
+
+    if (page_number && page_size) {
+      options['skip'] = (page_number - 1) * page_size;
+      options['take'] = page_size;
+    }
+
+    const boards = await getConnection().getRepository(Board).find(options);
     res.send(boards);
   }
 
@@ -23,5 +34,10 @@ export class BoardController {
 
     const board = await getConnection().getRepository(Board).findOne({id});
     res.send(board);
+  }
+
+  static countBoard = async (req, res) => {
+    const total = await getConnection().getRepository(Board).count();
+    res.send({total});
   }
 }
