@@ -40,4 +40,23 @@ export class BoardController {
     const total = await getConnection().getRepository(Board).count();
     res.send({total});
   }
+
+  static modifyBoard = async (req, res) => {
+    const {id, title, content} = req.body;
+
+    const updateOption = {};
+    if (title) {
+      updateOption['title'] = title;
+    }
+    if (content) {
+      updateOption['content'] = content;
+    }
+
+    const result = await getConnection().createQueryBuilder().update(Board)
+      .set(updateOption)
+      .where("id = :id", {id})
+      .execute();
+
+    res.send(result);
+  }
 }
