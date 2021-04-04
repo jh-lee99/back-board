@@ -1,4 +1,5 @@
 import express from 'express';
+import {createConnection} from "typeorm";
 
 let app = express();
 
@@ -60,6 +61,9 @@ app.post('/hello6', (req, res) => {
   res.send(result);
 })
 
-app.listen(8080, () => {
-  console.log('server is listening 8080');
+createConnection().then(connection => {
+  app.listen(8080, () => {
+    console.log('server is listening 8080');
+  });
 });
+
