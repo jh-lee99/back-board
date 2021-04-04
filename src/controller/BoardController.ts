@@ -59,4 +59,17 @@ export class BoardController {
 
     res.send(result);
   }
+
+  static removeBoard = async (req, res) => {
+    const {id} = req.query;
+
+    const result = await getConnection()
+      .createQueryBuilder()
+      .delete()
+      .from(Board)
+      .where("id = :id", {id})
+      .execute();
+
+    res.send(result);
+  }
 }

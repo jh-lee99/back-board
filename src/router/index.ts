@@ -8,5 +8,6 @@ routes.get('/boards', BoardController.findAllBoard);
 routes.get('/board/count', BoardController.countBoard);
 routes.get('/board/:id', BoardController.findOneBoard);
 routes.put('/board', BoardController.modifyBoard);
+routes.delete('/board', BoardController.removeBoard);
 
 export default routes;
