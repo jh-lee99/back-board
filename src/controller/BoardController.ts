@@ -12,4 +12,16 @@ export class BoardController {
 
     res.send(result);
   }
+
+  static findAllBoard = async (req, res) => {
+    const boards = await getConnection().getRepository(Board).find();
+    res.send(boards);
+  }
+
+  static findOneBoard = async (req, res) => {
+    const {id} = req.params;
+
+    const board = await getConnection().getRepository(Board).findOne({id});
+    res.send(board);
+  }
 }
