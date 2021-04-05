@@ -6,5 +6,6 @@ const upload = multer({ storage: multer.memoryStorage() })
 
 const routes = Router();
 routes.post('/upload', upload.single('file'), ImageController.uploadImage);
+routes.get('/view/:id', ImageController.viewImage);
 
 export default routes;
