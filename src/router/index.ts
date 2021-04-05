@@ -1,5 +1,6 @@
 import {Router} from "express";
 import {BoardController} from "../controller/BoardController";
+import image from "./image";
 
 const routes = Router();
 
@@ -9,5 +10,7 @@ routes.get('/board/count', BoardController.countBoard);
 routes.get('/board/:id', BoardController.findOneBoard);
 routes.put('/board', BoardController.modifyBoard);
 routes.delete('/board', BoardController.removeBoard);
+
+routes.use('/image', image);
 
 export default routes;
