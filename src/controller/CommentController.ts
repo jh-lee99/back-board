@@ -27,9 +27,9 @@ export class CommentController {
   }
 
   static findOneComment = async (req, res) => {
-    const {id} = req.params;
+    const {id} = req.query;
 
-    const comment = await getConnection().getRepository(Comment).findOne(id);
+    const comment = await getConnection().getRepository(Comment).findOne({id});
     console.log(comment);
     res.send(comment);
   }
