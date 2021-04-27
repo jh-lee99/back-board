@@ -1,6 +1,7 @@
 import {Router} from "express";
 import {BoardController} from "../controller/BoardController";
 import image from "./image";
+import {CommentController} from "../controller/CommentController";
 
 const routes = Router();
 
@@ -12,5 +13,9 @@ routes.put('/board', BoardController.modifyBoard);
 routes.delete('/board', BoardController.removeBoard);
 
 routes.use('/image', image);
+
+routes.post('/comment', CommentController.addComment);
+routes.get('/comments', CommentController.findAllComment);
+routes.get('/comment', CommentController.findOneComment);
 
 export default routes;
