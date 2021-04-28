@@ -21,7 +21,7 @@ export class CommentController {
 
     // const boards = await getConnection().getRepository(Comment).find({ where: { board_id: board_id } });
     const board = await getConnection().getRepository(Board)
-      .findOne({relations: ["comments"], where: {id: board_id}});
+      .findOne({relations: ["comments"], where: {id: board_id}, order: {id: 'DESC'}});
 
     res.send(board.comments);
   }
@@ -32,5 +32,29 @@ export class CommentController {
     const comment = await getConnection().getRepository(Comment).findOne({id});
     console.log(comment);
     res.send(comment);
+  }
+
+  static modifyComment = async (req, res) => {
+    const {id, content} = req.body;
+
+    const result = await getConnection().createQueryBuilder().update(Comment)
+      .set({content})
+      .where("id = :id", {id})
+      .execute();
+
+    res.send(result);
+  }
+
+  static removeComment = async (req, res) => {
+    const {id} = req.query;
+
+    const result = await getConnection()
+      .createQueryBuilder()
+      .delete()
+      .from(Comment)
+      .where("id = :id", {id})
+      .execute();
+
+    res.send(result);
   }
 }

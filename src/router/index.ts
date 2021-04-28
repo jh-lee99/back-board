@@ -17,5 +17,7 @@ routes.use('/image', image);
 routes.post('/comment', CommentController.addComment);
 routes.get('/comments', CommentController.findAllComment);
 routes.get('/comment', CommentController.findOneComment);
+routes.put('/comment', CommentController.modifyComment);
+routes.delete('/comment', CommentController.removeComment);
 
 export default routes;
