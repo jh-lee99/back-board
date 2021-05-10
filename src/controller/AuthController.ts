@@ -3,24 +3,32 @@ import {getConnection} from "typeorm";
 import {User} from "../entity/User";
 import {hashSync, compareSync} from 'bcryptjs';
 import {Role} from "../entity/Role";
+import jwt from 'jsonwebtoken';
 
 export class AuthController {
   static signIn = async (req, res) => {
     const {email, password} = req.body;
 
-    const result = await getConnection().getRepository(User).findOne({where: {email}});
+    const user = await getConnection().getRepository(User)
+      .findOne({relations: ["roles"], where: {email}});
 
-    if (!result) {
+    if (!user) {
       return res.status(400).send({ message: "User Not found." });
     }
 
-    if (!compareSync(password, result.password)) {
+    if (!compareSync(password, user.password)) {
       return res.status(400).send({ message: "Invalid password" });
     }
 
-    console.log(result);
+    // token 생성
+    const token = jwt.sign({ jti: user.id, email: user.email, roles: user.roles.map(role => role.name) },
+      process.env.secret, {
+      subject: user.username,
+      algorithm: 'HS512',
+      expiresIn: process.env.expirationSecond
+    });
 
-    res.send(result);
+    res.send({jwt: token});
   }
 
   static signUp = async (req, res) => {
