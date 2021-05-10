@@ -1,17 +1,24 @@
 import {Board} from "../entity/Board";
 import {getConnection} from "typeorm";
 import {User} from "../entity/User";
-import {hashSync} from 'bcryptjs';
+import {hashSync, compareSync} from 'bcryptjs';
 import {Role} from "../entity/Role";
 
 export class AuthController {
   static signIn = async (req, res) => {
-    const {title, content} = req.body;
+    const {email, password} = req.body;
 
-    const board = new Board();
-    board.title = title;
-    board.content = content;
-    const result = await getConnection().getRepository(Board).save(board);
+    const result = await getConnection().getRepository(User).findOne({where: {email}});
+
+    if (!result) {
+      return res.status(400).send({ message: "User Not found." });
+    }
+
+    if (!compareSync(password, result.password)) {
+      return res.status(400).send({ message: "Invalid password" });
+    }
+
+    console.log(result);
 
     res.send(result);
   }
