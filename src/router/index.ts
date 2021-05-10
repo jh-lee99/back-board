@@ -3,6 +3,8 @@ import {BoardController} from "../controller/BoardController";
 import image from "./image";
 import {CommentController} from "../controller/CommentController";
 import auth from "./auth";
+import admin from "./admin";
+import {AuthMiddleware} from "../middleware/AuthMiddleware";
 
 const routes = Router();
 
@@ -22,5 +24,7 @@ routes.put('/comment', CommentController.modifyComment);
 routes.delete('/comment', CommentController.removeComment);
 
 routes.use('/auth', auth);
+
+routes.use('/admin', AuthMiddleware.verifyToken, admin);
 
 export default routes;
