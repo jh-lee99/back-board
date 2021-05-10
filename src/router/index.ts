@@ -2,6 +2,7 @@ import {Router} from "express";
 import {BoardController} from "../controller/BoardController";
 import image from "./image";
 import {CommentController} from "../controller/CommentController";
+import auth from "./auth";
 
 const routes = Router();
 
@@ -19,5 +20,7 @@ routes.get('/comments', CommentController.findAllComment);
 routes.get('/comment', CommentController.findOneComment);
 routes.put('/comment', CommentController.modifyComment);
 routes.delete('/comment', CommentController.removeComment);
+
+routes.use('/auth', auth);
 
 export default routes;
