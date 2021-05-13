@@ -4,13 +4,14 @@ import {
   Entity, JoinColumn, JoinTable,
   ManyToMany,
   OneToMany,
-  PrimaryGeneratedColumn,
+  PrimaryGeneratedColumn, Unique,
   UpdateDateColumn
 } from "typeorm";
 import {Comment} from './Comment';
 import {Role} from "./Role";
 
 @Entity()
+@Unique(['email'])
 export class User {
   @PrimaryGeneratedColumn({type: "bigint"})
   id: number;
