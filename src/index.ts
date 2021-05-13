@@ -1,6 +1,7 @@
 import express from 'express';
 import {createConnection} from "typeorm";
 import router from './router';
+import {AuthMiddleware} from "./middleware/AuthMiddleware";
 
 let app = express();
 

@@ -1,30 +1,21 @@
 import {Router} from "express";
-import {BoardController} from "../controller/BoardController";
 import image from "./image";
-import {CommentController} from "../controller/CommentController";
 import auth from "./auth";
 import admin from "./admin";
 import {AuthMiddleware} from "../middleware/AuthMiddleware";
+import board from "./board";
+import comment from "./comment";
 
 const routes = Router();
 
-routes.post('/board', BoardController.addBoard);
-routes.get('/boards', BoardController.findAllBoard);
-routes.get('/board/count', BoardController.countBoard);
-routes.get('/board/:id', BoardController.findOneBoard);
-routes.put('/board', BoardController.modifyBoard);
-routes.delete('/board', BoardController.removeBoard);
+routes.use('/board', AuthMiddleware.verifyToken, board);
 
 routes.use('/image', image);
 
-routes.post('/comment', CommentController.addComment);
-routes.get('/comments', CommentController.findAllComment);
-routes.get('/comment', CommentController.findOneComment);
-routes.put('/comment', CommentController.modifyComment);
-routes.delete('/comment', CommentController.removeComment);
+routes.use('/comment', AuthMiddleware.verifyToken, comment);
 
 routes.use('/auth', auth);
 
-routes.use('/admin', AuthMiddleware.verifyToken, admin);
+routes.use('/admin',  AuthMiddleware.verifyToken, AuthMiddleware.hasRole, admin);
 
 export default routes;

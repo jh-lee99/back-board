@@ -30,6 +30,8 @@ export class BoardController {
   }
 
   static findOneBoard = async (req, res) => {
+    // 동적 파라메터가 정규표현식으로 변경이 되면 첫번째 파라메터를 가져와야 한다. ex: {'0': '1'}
+    // const id = req.params[0];
     const {id} = req.params;
 
     const board = await getConnection().getRepository(Board).findOne({id});

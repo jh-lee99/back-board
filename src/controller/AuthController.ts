@@ -25,7 +25,7 @@ export class AuthController {
       process.env.secret, {
       subject: user.username,
       algorithm: 'HS512',
-      expiresIn: process.env.expirationSecond
+      expiresIn: process.env.expirationSecondMs
     });
 
     res.send({jwt: token});
