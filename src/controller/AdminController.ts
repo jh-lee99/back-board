@@ -1,5 +1,5 @@
 export class AdminController {
-  static getUser = async (req, res) => {
+  static getDashboard = async (req, res) => {
 
     res.send('success');
   }
