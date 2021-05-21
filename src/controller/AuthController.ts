@@ -39,6 +39,15 @@ export class AuthController {
     user.password = hashSync(password, 8);
     user.username = username;
 
+    // 이메일 중복 체크
+    const existUser = await getConnection().getRepository(User)
+      .findOne({where: {email}});
+
+    if (existUser) {
+      return res.status(400).send({ message: "User Not found." });
+    }
+
+    // roels 설정
     user.roles = [];
 
     if (roles && roles.length > 0) {
