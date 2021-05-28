@@ -9,11 +9,11 @@ import moderator from "./moderator";
 
 const routes = Router();
 
-routes.use('/board', AuthMiddleware.verifyToken, board);
+routes.use('/board', board);
 
 routes.use('/image', image);
 
-routes.use('/comment', AuthMiddleware.verifyToken, comment);
+routes.use('/comment', comment);
 
 routes.use('/auth', auth);
 
