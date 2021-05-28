@@ -1,13 +1,17 @@
 import {Board} from "../entity/Board";
 import {getConnection} from "typeorm";
+import {User} from "../entity/User";
 
 export class BoardController {
   static addBoard = async (req, res) => {
-    const {title, content} = req.body;
+    const {title, content, user_id} = req.body;
+
+    const user = await getConnection().getRepository(User).findOne({id: user_id});
 
     const board = new Board();
     board.title = title;
     board.content = content;
+    board.user = user;
     const result = await getConnection().getRepository(Board).save(board);
 
     res.send(result);

@@ -30,6 +30,6 @@ export class Board {
   @OneToMany(type => Comment, comment => comment.board)
   comments: Comment[];
 
-  @ManyToOne(type => User, user => user.boards)
+  @ManyToOne(type => User, user => user.boards, {onDelete: 'CASCADE', onUpdate: "CASCADE"})
   user: User;
 }
