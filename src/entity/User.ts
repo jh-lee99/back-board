@@ -9,6 +9,7 @@ import {
 } from "typeorm";
 import {Comment} from './Comment';
 import {Role} from "./Role";
+import {Board} from "./Board";
 
 @Entity()
 @Unique(['email'])
@@ -38,4 +39,10 @@ export class User {
     inverseJoinColumn: {name: "role_id", referencedColumnName: "id"}
   })
   roles: Role[];
+
+  @OneToMany(type => Board, board => board.user)
+  boards: Board[];
+
+  @OneToMany(type => Comment, comment => comment.user)
+  comments: Comment[];
 }
