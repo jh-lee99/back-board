@@ -23,6 +23,7 @@ export class BoardController {
     const options = {};
     options['select'] = ["id", "title", "content", "created", "updated"];
     options['order'] = {id: 'DESC'};
+    options['relations'] = ['user']
 
     if (page_number && page_size) {
       options['skip'] = (page_number - 1) * page_size;
