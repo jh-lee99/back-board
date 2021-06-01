@@ -1,16 +1,19 @@
 import {Comment} from "../entity/Comment";
 import {getConnection} from "typeorm";
 import {Board} from "../entity/Board";
+import {User} from "../entity/User";
 
 export class CommentController {
   static addComment = async (req, res) => {
-    const {board_id, content} = req.body;
+    const {board_id, content, user_id} = req.body;
 
     const board = await getConnection().getRepository(Board).findOne({id: board_id});
+    const user = await getConnection().getRepository(User).findOne({id: user_id});
 
     const comment = new Comment();
     comment.content = content;
     comment.board = board;
+    comment.user = user;
     await getConnection().getRepository(Comment).save(comment);
 
     res.send(comment);
@@ -19,11 +22,19 @@ export class CommentController {
   static findAllComment = async (req, res) => {
     const {board_id} = req.query;
 
+    const result = await getConnection().getRepository(Comment).createQueryBuilder('comment')
+      .innerJoinAndSelect('comment.board', 'board')
+      .innerJoinAndSelect('comment.user', 'user')
+      .where('board.id=:board_id', {board_id})
+      .getMany()
+    console.log(result);
+    res.send(result);
+
     // const boards = await getConnection().getRepository(Comment).find({ where: { board_id: board_id } });
-    const board = await getConnection().getRepository(Board)
+/*    const board = await getConnection().getRepository(Board)
       .findOne({relations: ["comments"], where: {id: board_id}, order: {id: 'DESC'}});
 
-    res.send(board.comments);
+    res.send(board.comments);*/
   }
 
   static findOneComment = async (req, res) => {
