@@ -39,7 +39,7 @@ export class BoardController {
     // const id = req.params[0];
     const {id} = req.params;
 
-    const board = await getConnection().getRepository(Board).findOne({id});
+    const board = await getConnection().getRepository(Board).findOne({relations: ['user'], where: {id}});
     res.send(board);
   }
 
