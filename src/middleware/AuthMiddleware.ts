@@ -1,4 +1,4 @@
-import {verify, decode} from 'jsonwebtoken';
+import {verify} from 'jsonwebtoken';
 
 export class AuthMiddleware {
   static verifyToken = async (req, res, next) => {
