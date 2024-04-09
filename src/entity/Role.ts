@@ -7,15 +7,15 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from "typeorm";
-import {Comment} from './Comment';
-import {User} from "./User";
+import { Comment } from './Comment';
+import { User } from "./User";
 
 @Entity()
 export class Role {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({length: 20})
+  @Column({ length: 20 })
   name: string;
 
   @CreateDateColumn()
@@ -27,8 +27,8 @@ export class Role {
   @ManyToMany(() => User, user => user.roles)
   @JoinTable({
     name: "user_role",
-    joinColumn: {name: "role_id", referencedColumnName: "id"},
-    inverseJoinColumn: {name: "user_id", referencedColumnName: "id"}
+    joinColumn: { name: "role_id", referencedColumnName: "id" },
+    inverseJoinColumn: { name: "user_id", referencedColumnName: "id" }
   })
   users: User[];
 }

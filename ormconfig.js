@@ -1,22 +1,50 @@
-const SnakeNamingStrategy = require("typeorm-naming-strategies").SnakeNamingStrategy
+const SnakeNamingStrategy = require("typeorm-naming-strategies").SnakeNamingStrategy;
+const isTS = require('detect-ts-node');
 
-module.exports = {
+const config = {
+  "name": "default",
   "type": "mysql",
-  "host": "localhost",
-  "port": 3306,
-  "username": "eastflag",
-  "password": "12345678",
-  "database": "eastdb",
-  "synchronize": true,
+  "replication": {
+    "master": {
+      "host": "192.168.30.101",
+      "port": 3306,
+      "username": "boarduser",
+      "password": "boardpass",
+      "database": "boarddb"
+    },
+    "slaves": [{
+      "host": "192.168.30.101",
+      "port": 3307,
+      "username": "boarduser",
+      "password": "boardpass",
+      "database": "boarddb"
+    }]
+  },
+  "synchronize": false,
   "logging": false,
-  "entities": [
+  "namingStrategy": new SnakeNamingStrategy()
+};
+
+if (isTS) {
+  config.entities = [
     "src/entity/**/*.ts"
-  ],
-  "migrations": [
+  ];
+  config.migrations = [
     "src/migration/**/*.ts"
-  ],
-  "subscribers": [
+  ];
+  config.subscribers = [
     "src/subscriber/**/*.ts"
-  ],
-  namingStrategy: new SnakeNamingStrategy()
+  ];
+} else {
+  config.entities = [
+    "./entity/**/*.js"
+  ];
+  config.migrations = [
+    "./migration/**/*.js"
+  ];
+  config.subscribers = [
+    "./subscriber/**/*.js"
+  ];
 }
+
+module.exports = config;

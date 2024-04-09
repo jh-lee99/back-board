@@ -7,15 +7,15 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from "typeorm";
-import {Comment} from './Comment';
-import {User} from "./User";
+import { Comment } from './Comment';
+import { User } from "./User";
 
 @Entity()
 export class Board {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({length: 100})
+  @Column({ length: 100 })
   title: string;
 
   @Column("text")

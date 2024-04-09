@@ -1,16 +1,16 @@
-import {Board} from "../entity/Board";
-import {getConnection} from "typeorm";
-import {User} from "../entity/User";
-import {hashSync, compareSync} from 'bcryptjs';
-import {Role} from "../entity/Role";
+import { Board } from "../entity/Board";
+import { getConnection } from "typeorm";
+import { User } from "../entity/User";
+import { hashSync, compareSync } from 'bcryptjs';
+import { Role } from "../entity/Role";
 import jwt from 'jsonwebtoken';
 
 export class AuthController {
   static signIn = async (req, res) => {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
 
     const user = await getConnection().getRepository(User)
-      .findOne({relations: ["roles"], where: {email}});
+      .findOne({ relations: ["roles"], where: { email } });
 
     if (!user) {
       return res.status(400).send({ message: "User Not found." });
@@ -28,11 +28,11 @@ export class AuthController {
       expiresIn: process.env.expirationSecondMs
     });
 
-    res.send({jwt: token});
+    res.send({ jwt: token });
   }
 
   static signUp = async (req, res) => {
-    const {email, password, username, roles} = req.body;
+    const { email, password, username, roles } = req.body;
 
     const user = new User();
     user.email = email;
@@ -41,7 +41,7 @@ export class AuthController {
 
     // 이메일 중복 체크
     const existUser = await getConnection().getRepository(User)
-      .findOne({where: {email}});
+      .findOne({ where: { email } });
 
     if (existUser) {
       return res.status(400).send({ message: "User Not found." });
@@ -53,13 +53,13 @@ export class AuthController {
     if (roles && roles.length > 0) {
       // where a 혹은 b or 조건 [{ name: 'a'}, {name: 'b'}]
       const res = await getConnection().getRepository(Role).find({
-        where: roles.map(name => ({name}))
+        where: roles.map(name => ({ name }))
       })
       user.roles = res;
     } else {
       // 기본 role은 USER
       const res = await getConnection().getRepository(Role).find({
-        where: {name: 'ROLE_USER'}
+        where: { name: 'ROLE_USER' }
       })
       user.roles = res;
     }
